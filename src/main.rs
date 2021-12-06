@@ -12,15 +12,21 @@ mod setup;
 
 fn main() {
     App::build()
-        .insert_resource(ClearColor(Color::BLACK))
-        .insert_resource(WindowDescriptor {
-            title: "Space Invaders".to_string(),
-            width: 598.0,
-            height: 675.0,
-            vsync: true,
-            resizable: false,
-            ..Default::default()
-        })
+        .insert_resource
+			(
+				WindowDescriptor
+					{
+						title: "Space Invaders".to_string(),
+						width: 598.0,
+						height: 675.0,
+						vsync: true,
+						resizable: false,
+						cursor_visible: true,
+
+						..Default::default()
+					}
+			)
+		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(setup::setup.system())
         .add_plugins(DefaultPlugins)
         .run();
