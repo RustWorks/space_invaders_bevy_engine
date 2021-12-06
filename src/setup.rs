@@ -1,6 +1,12 @@
 use {
 	bevy::{
-		prelude::*,
+		prelude::{
+			Res, ResMut, Commands,
+			Assets, Color, ColorMaterial,
+			Sprite, SpriteBundle,
+			OrthographicCameraBundle
+		},
+		math::Vec2,
 		window::WindowId,
 		winit::WinitWindows,
 	},
