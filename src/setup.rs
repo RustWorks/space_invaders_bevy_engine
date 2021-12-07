@@ -1,24 +1,18 @@
 use {
 	bevy::{
 		prelude::{
-			Res, ResMut, Commands,
-			Assets, Color, ColorMaterial,
-			Sprite, SpriteBundle,
-			OrthographicCameraBundle
+			ResMut, Commands,
+			Color, ColorMaterial,
+			OrthographicCameraBundle,
+			Assets, Sprite, SpriteBundle,
 		},
 		math::Vec2,
-		window::WindowId,
-		winit::WinitWindows,
 	},
-	winit::window::Icon
 };
-
-const WINDOW_ICON: &str = "assets/icon.jpg";
 
 pub fn setup(
 	mut commands: Commands,
 	mut materials: ResMut<Assets<ColorMaterial>>,
-	windows: Res<WinitWindows>
 ) {
 	// Camera
 	commands.spawn_bundle(OrthographicCameraBundle::new_2d());
@@ -40,37 +34,4 @@ pub fn setup(
 					..Default::default()
 				}
 		);
-
-	// Set window icon
-	let primary =
-		windows.get_window
-			(
-				WindowId::primary()
-			).unwrap();
-
-	let (icon_rgba, icon_width, icon_height) =
-		{
-			let image =
-				image::open(WINDOW_ICON)
-					.expect("Failed to open icon path")
-					.into_rgba8();
-
-			let (width, height) =
-				image.dimensions();
-
-			let rgba =
-				image.into_raw();
-
-			(rgba, width, height)
-		};
-
-	let icon =
-		Icon::from_rgba
-			(
-				icon_rgba,
-				icon_width,
-				icon_height
-			).unwrap();
-
-	primary.set_window_icon(Some(icon));
 }

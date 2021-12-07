@@ -9,6 +9,7 @@ use bevy::{
 };
 
 mod setup;
+mod window;
 
 fn main() {
     App::build()
@@ -16,7 +17,7 @@ fn main() {
 			(
 				WindowDescriptor
 					{
-						title: "Space Invaders".to_string(),
+						title: "Space Invaders".into(),
 						width: 598.0,
 						height: 675.0,
 						vsync: true,
@@ -27,7 +28,8 @@ fn main() {
 					}
 			)
 		.insert_resource(ClearColor(Color::BLACK))
-        .add_startup_system(setup::setup.system())
+        .add_startup_system(window::handle_icon.system())
+		.add_system(setup::setup.system())
         .add_plugins(DefaultPlugins)
         .run();
 }
