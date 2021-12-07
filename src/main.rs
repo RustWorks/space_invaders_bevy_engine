@@ -9,7 +9,6 @@ use bevy::{
 };
 
 mod setup;
-mod window;
 
 fn main() {
     App::build()
@@ -28,8 +27,7 @@ fn main() {
 					}
 			)
 		.insert_resource(ClearColor(Color::BLACK))
-        .add_startup_system(window::handle_icon.system())
-		.add_system(setup::setup.system())
+        .add_startup_system(setup::setup.system())
         .add_plugins(DefaultPlugins)
         .run();
 }

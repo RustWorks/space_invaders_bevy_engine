@@ -1,3 +1,6 @@
+// FIXME: This is not loaded for now,
+// for some reason tends to crash DirectX...
+
 use {
 	bevy::{
 		prelude::Res,
@@ -7,7 +10,7 @@ use {
 	winit::window::Icon
 };
 
-const ICON_PATH: &str = "assets/icon.jpg";
+const ICON_PATH: &str = r#"assets\window\icon.png"#;
 
 /*
 	Dirty hack from Beavy cheat-book

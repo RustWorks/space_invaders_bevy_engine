@@ -14,7 +14,4 @@ lto = true
 debug = false
 
 [dependencies]
-bevy = "0.5.0"
-# use older winit version to fix crate conflicts.
-winit = "0.24.0"
-image = "0.23.14"
+bevy = "0.5"
