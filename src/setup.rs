@@ -21,15 +21,16 @@ pub struct Materials {
 	ferris: Handle<ColorMaterial>
 }
 
+#[allow(unused)]
 pub struct WindowSize {
 	h: f32,
 	w: f32
 }
 
 pub struct Player;
-pub struct PlayerSpeed(f32);
 
-impl Default for PlayerSpeed {
+pub struct Speed(f32);
+impl Default for Speed {
 	fn default() -> Self {
 		Self(500.0)
 	}
@@ -77,7 +78,7 @@ pub fn spawn_player(
 			SpriteBundle {
 				material: sprite.ferris.clone(),
 				transform: Transform {
-					translation: Vec3::new(0.0, pos_btm + 75.0 / 2.0, 10.0),
+					translation: Vec3::new(0.0, pos_btm + 75.0 / 2.0 + 5.0, 10.0),
 					scale: Vec3::new(0.8, 0.8, 1.1),
 
 					..Default::default()
@@ -86,14 +87,17 @@ pub fn spawn_player(
 			}
 		)
 		.insert(Player)
-		.insert(PlayerSpeed::default);
+		.insert(Speed::default());
 }
 
 pub fn player_movement(
 	kbd: Res<Input<KeyCode>>,
-	mut query: Query<(&PlayerSpeed, &mut Transform, With<Player>)>
+	mut query: Query<(
+		&Speed,
+		&mut Transform
+	), With<Player>>
 ) {
-	if let Ok((speed, mut translation, _)) =
+	if let Ok((speed, mut transform)) =
 		query.single_mut() {
 			let dir =
 				if kbd.pressed(KeyCode::Left) {
@@ -103,6 +107,6 @@ pub fn player_movement(
 				} else {
 					0.0
 				};
-				translation.translation.x += dir * speed.0 * TIME_STEP;
+				transform.translation.x += dir * speed.0 * TIME_STEP
 		}
 }
