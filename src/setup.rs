@@ -78,7 +78,7 @@ pub fn spawn_player(
 			SpriteBundle {
 				material: sprite.ferris.clone(),
 				transform: Transform {
-					translation: Vec3::new(0.0, pos_btm + 75.0 / 2.0 + 5.0, 10.0),
+					translation: Vec3::new(0.0, pos_btm + 70.0 / 2.0 + 5.0, 10.0),
 					scale: Vec3::new(0.8, 0.8, 1.1),
 
 					..Default::default()
@@ -90,7 +90,7 @@ pub fn spawn_player(
 		.insert(Speed::default());
 }
 
-pub fn player_movement(
+pub fn movement(
 	kbd: Res<Input<KeyCode>>,
 	mut query: Query<(
 		&Speed,
@@ -99,14 +99,24 @@ pub fn player_movement(
 ) {
 	if let Ok((speed, mut transform)) =
 		query.single_mut() {
-			let dir =
-				if kbd.pressed(KeyCode::Left) {
-					-1.0
-				} else if kbd.pressed(KeyCode::Right) {
-					1.0
+			let dir_x =
+				if kbd.pressed(KeyCode::Left) || kbd.pressed(KeyCode::A) {
+					-0.7
+				} else if kbd.pressed(KeyCode::Right) || kbd.pressed(KeyCode::D) {
+					0.7
 				} else {
 					0.0
 				};
-				transform.translation.x += dir * speed.0 * TIME_STEP
+				transform.translation.x += dir_x * speed.0 * TIME_STEP;
+
+			let dir_y =
+				if kbd.pressed(KeyCode::Up) || kbd.pressed(KeyCode::W) {
+					0.7
+				} else if kbd.pressed(KeyCode::Down) || kbd.pressed(KeyCode::S) {
+					-0.7
+				} else {
+					0.0
+				};
+				transform.translation.y += dir_y * speed.0 * TIME_STEP;
 		}
 }

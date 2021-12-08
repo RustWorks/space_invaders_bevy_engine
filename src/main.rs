@@ -17,8 +17,8 @@ fn main() {
 				WindowDescriptor
 					{
 						title: "Space Invaders".into(),
-						width: 598.0,
-						height: 675.0,
+						width: 1000.0,
+						height: 600.0,
 						vsync: true,
 						resizable: false,
 						cursor_visible: true,
@@ -32,7 +32,7 @@ fn main() {
 			"game_setup_actors",
 			SystemStage::single(setup::spawn_player.system())
 		)
-		.add_system(setup::player_movement.system())
+		.add_system(setup::movement.system())
         .add_plugins(DefaultPlugins)
         .run();
 }
