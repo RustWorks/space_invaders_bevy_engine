@@ -97,13 +97,15 @@ pub fn spawn(
 
 pub fn player_move(
 	kbd: Res<Input<KeyCode>>,
-	mut query: Query<(
-		&Speed,
-		&mut Transform,
+	mut query: Query<
+		(
+			&Speed,
+			&mut Transform,
+		),
 		With<Player>
-	)>
+	>
 ) {
-	if let Ok((speed, mut transform, _)) =
+	if let Ok((speed, mut transform)) =
 		query.single_mut() {
 			let dir_x =
 				if kbd.pressed(KeyCode::Left) || kbd.pressed(KeyCode::A) {
@@ -131,10 +133,12 @@ pub fn shoot(
 	kbd: Res<Input<KeyCode>>,
 	sprite: Res<Materials>,
 	mut cmds: Commands,
-	mut query: Query<(
-		&Transform,
-		With<Player>
-	)>
+	mut query: Query<
+		(
+			&Transform,
+			With<Player>
+		)
+	>
 ) {
 	if let Ok((player_tf, _)) =
 		query.single_mut() {
@@ -158,7 +162,7 @@ pub fn shoot(
 
 					)
 					.insert(Laser)
-					.insert(Speed::default);
+					.insert(Speed::default());
 			}
 		}
 }
@@ -166,17 +170,19 @@ pub fn shoot(
 pub fn shoot_move(
 	window: Res<WindowSize>,
 	mut cmds: Commands,
-	mut query: Query<(
-		Entity,
-		&Speed,
-		&mut Transform,
+	mut query: Query<
+		(
+			Entity,
+			&Speed,
+			&mut Transform,
+		),
 		With<Laser>
-	)>
+	>
 ) {
 	for (
 		laser_entity,
 		speed,
-		mut laser_tf, _
+		mut laser_tf,
 	) in query.iter_mut() {
 		let trans =
 			&mut laser_tf.translation;
