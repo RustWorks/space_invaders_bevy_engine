@@ -30,9 +30,11 @@ fn main() {
         .add_startup_system(setup::setup.system())
 		.add_startup_stage(
 			"game_setup_actors",
-			SystemStage::single(setup::spawn_player.system())
+			SystemStage::single(setup::spawn.system())
 		)
-		.add_system(setup::movement.system())
+		.add_system(setup::player_move.system())
+		.add_system(setup::shoot.system())
+		.add_system(setup::shoot_move.system())
         .add_plugins(DefaultPlugins)
         .run();
 }

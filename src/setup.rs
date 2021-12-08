@@ -2,7 +2,7 @@ use {
 	bevy::{
 		prelude::{
 			Res, ResMut,
-			With, Query,
+			With, Query, Entity,
 			Commands, Transform,
 			Assets, AssetServer,
 			Handle, KeyCode, Windows,
@@ -15,10 +15,13 @@ use {
 };
 
 const FERRIS: &str = r#"sprites\ferris.png"#;
+const LASER: &str = r#"sprites\laser.png"#;
+
 const TIME_STEP: f32 = 1.0 / 60.0;
 
 pub struct Materials {
-	ferris: Handle<ColorMaterial>
+	ferris: Handle<ColorMaterial>,
+	laser: Handle<ColorMaterial>
 }
 
 #[allow(unused)]
@@ -28,6 +31,7 @@ pub struct WindowSize {
 }
 
 pub struct Player;
+pub struct Laser;
 
 pub struct Speed(f32);
 impl Default for Speed {
@@ -53,6 +57,7 @@ pub fn setup(
 		(
 			Materials {
 				ferris: materials.add(asset_srv.load(FERRIS).into()),
+    			laser: materials.add(asset_srv.load(LASER).into()),
 			}
 		);
 
@@ -65,7 +70,7 @@ pub fn setup(
 		);
 }
 
-pub fn spawn_player(
+pub fn spawn(
 	mut cmds: Commands,
 	sprite: Res<Materials>,
 	window: Res<WindowSize>
@@ -90,14 +95,15 @@ pub fn spawn_player(
 		.insert(Speed::default());
 }
 
-pub fn movement(
+pub fn player_move(
 	kbd: Res<Input<KeyCode>>,
 	mut query: Query<(
 		&Speed,
-		&mut Transform
-	), With<Player>>
+		&mut Transform,
+		With<Player>
+	)>
 ) {
-	if let Ok((speed, mut transform)) =
+	if let Ok((speed, mut transform, _)) =
 		query.single_mut() {
 			let dir_x =
 				if kbd.pressed(KeyCode::Left) || kbd.pressed(KeyCode::A) {
@@ -119,4 +125,67 @@ pub fn movement(
 				};
 				transform.translation.y += dir_y * speed.0 * TIME_STEP;
 		}
+}
+
+pub fn shoot(
+	kbd: Res<Input<KeyCode>>,
+	sprite: Res<Materials>,
+	mut cmds: Commands,
+	mut query: Query<(
+		&Transform,
+		With<Player>
+	)>
+) {
+	if let Ok((player_tf, _)) =
+		query.single_mut() {
+			if kbd.pressed(KeyCode::Space) {
+				let x =
+					player_tf.translation.x;
+				let y =
+					player_tf.translation.y;
+
+				cmds.spawn_bundle
+					(
+						SpriteBundle {
+							material: sprite.laser.clone(),
+							transform: Transform {
+								translation: Vec3::new(x, y, 0.0),
+
+								..Default::default()
+							},
+							..Default::default()
+						}
+
+					)
+					.insert(Laser)
+					.insert(Speed::default);
+			}
+		}
+}
+
+pub fn shoot_move(
+	window: Res<WindowSize>,
+	mut cmds: Commands,
+	mut query: Query<(
+		Entity,
+		&Speed,
+		&mut Transform,
+		With<Laser>
+	)>
+) {
+	for (
+		laser_entity,
+		speed,
+		mut laser_tf, _
+	) in query.iter_mut() {
+		let trans =
+			&mut laser_tf.translation;
+
+			trans.y += speed.0 * TIME_STEP;
+			if trans.y > window.h {
+				cmds
+					.entity(laser_entity)
+					.despawn();
+			}
+	}
 }
