@@ -2,18 +2,20 @@ use {
 	bevy::{
 		prelude::{
 			Res, ResMut,
-			Handle, Windows,
+			With, Query,
 			Commands, Transform,
 			Assets, AssetServer,
+			Handle, KeyCode, Windows,
 			OrthographicCameraBundle,
 			SpriteBundle, ColorMaterial
 		},
-		math::Vec3
+		math::Vec3,
+		input::Input
 	}
 };
 
 const FERRIS: &str = r#"sprites\ferris.png"#;
-// const TIME_STEP: f32 = 1.0 / 60.0;
+const TIME_STEP: f32 = 1.0 / 60.0;
 
 pub struct Materials {
 	ferris: Handle<ColorMaterial>
@@ -24,8 +26,8 @@ pub struct WindowSize {
 	w: f32
 }
 
-struct Player;
-struct PlayerSpeed(f32);
+pub struct Player;
+pub struct PlayerSpeed(f32);
 
 impl Default for PlayerSpeed {
 	fn default() -> Self {
@@ -69,7 +71,7 @@ pub fn spawn_player(
 ) {
 	let pos_btm = -window.h / 2.0;
 
-	// Spawn sprite
+	// Spawn ferris
 	cmds.spawn_bundle
 		(
 			SpriteBundle {
@@ -85,4 +87,22 @@ pub fn spawn_player(
 		)
 		.insert(Player)
 		.insert(PlayerSpeed::default);
+}
+
+pub fn player_movement(
+	kbd: Res<Input<KeyCode>>,
+	mut query: Query<(&PlayerSpeed, &mut Transform, With<Player>)>
+) {
+	if let Ok((speed, mut translation, _)) =
+		query.single_mut() {
+			let dir =
+				if kbd.pressed(KeyCode::Left) {
+					-1.0
+				} else if kbd.pressed(KeyCode::Right) {
+					1.0
+				} else {
+					0.0
+				};
+				translation.translation.x += dir * speed.0 * TIME_STEP;
+		}
 }

@@ -1,3 +1,5 @@
+mod setup;
+
 use bevy::{
 	prelude::{
 		App, Color,
@@ -7,8 +9,6 @@ use bevy::{
 	},
 	render::pass::ClearColor
 };
-
-mod setup;
 
 fn main() {
     App::build()
@@ -32,6 +32,7 @@ fn main() {
 			"game_setup_actors",
 			SystemStage::single(setup::spawn_player.system())
 		)
+		.add_system(setup::player_movement.system())
         .add_plugins(DefaultPlugins)
         .run();
 }
