@@ -1,14 +1,14 @@
-mod setup;
+mod assets;
+mod plugins {
+	pub mod player;
+}
 
 use bevy::{
-	prelude::{
-		App, Color,
-		IntoSystem,
-		DefaultPlugins,
-		WindowDescriptor, SystemStage
-	},
+	prelude::*,
 	render::pass::ClearColor
 };
+
+use crate::plugins::player::PlayerPlugin;
 
 fn main() {
     App::build()
@@ -27,14 +27,8 @@ fn main() {
 					}
 			)
 		.insert_resource(ClearColor(Color::BLACK))
-        .add_startup_system(setup::setup.system())
-		.add_startup_stage(
-			"game_setup_actors",
-			SystemStage::single(setup::spawn.system())
-		)
-		.add_system(setup::player_move.system())
-		.add_system(setup::shoot.system())
-		.add_system(setup::shoot_move.system())
+        .add_startup_system(assets::materials.system())
         .add_plugins(DefaultPlugins)
+		.add_plugin(PlayerPlugin)
         .run();
 }
