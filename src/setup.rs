@@ -1,7 +1,8 @@
 use {
 	bevy::{
 		prelude::{
-			Res, ResMut, Windows,
+			Res, ResMut,
+			Handle, Windows,
 			Commands, Transform,
 			Assets, AssetServer,
 			OrthographicCameraBundle,
@@ -11,43 +12,77 @@ use {
 	}
 };
 
-const SPACE_SHIP: &str = r#"sprites\ferris.png"#;
+const FERRIS: &str = r#"sprites\ferris.png"#;
+// const TIME_STEP: f32 = 1.0 / 60.0;
+
+pub struct Materials {
+	ferris: Handle<ColorMaterial>
+}
+
+pub struct WindowSize {
+	h: f32,
+	w: f32
+}
+
+struct Player;
+struct PlayerSpeed(f32);
+
+impl Default for PlayerSpeed {
+	fn default() -> Self {
+		Self(500.0)
+	}
+}
 
 pub fn setup(
-	server: Res<AssetServer>,
+	mut cmds: Commands,
 	mut windows: ResMut<Windows>,
-	mut commands: Commands,
+	asset_srv: Res<AssetServer>,
 	mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-	// Camera
-	commands.spawn_bundle(OrthographicCameraBundle::new_2d());
-
-	let window =
+	let win =
 		windows
 			.get_primary_mut()
 			.unwrap();
 
-	let pos_bottom =
-		-window.height() / 2.0;
-	// Spawn sprite
-	commands.spawn_bundle
-		(
-			SpriteBundle
-				{
-					material: materials.add(server.load(SPACE_SHIP).into()),
-					transform: Transform
-						{
-							translation: Vec3::new
-								(
-									0.0,
-									pos_bottom + 75.0 / 2.0,
-									10.0
-								),
+	cmds.spawn_bundle(OrthographicCameraBundle::new_2d());
 
-							..Default::default()
-						},
+	cmds.insert_resource
+		(
+			Materials {
+				ferris: materials.add(asset_srv.load(FERRIS).into()),
+			}
+		);
+
+	cmds.insert_resource
+		(
+			WindowSize {
+				h: win.height(),
+				w: win.width()
+			}
+		);
+}
+
+pub fn spawn_player(
+	mut cmds: Commands,
+	sprite: Res<Materials>,
+	window: Res<WindowSize>
+) {
+	let pos_btm = -window.h / 2.0;
+
+	// Spawn sprite
+	cmds.spawn_bundle
+		(
+			SpriteBundle {
+				material: sprite.ferris.clone(),
+				transform: Transform {
+					translation: Vec3::new(0.0, pos_btm + 75.0 / 2.0, 10.0),
+					scale: Vec3::new(0.8, 0.8, 1.1),
 
 					..Default::default()
-				}
-		);
+				},
+				..Default::default()
+			}
+		)
+		.insert(Player)
+		.insert(PlayerSpeed::default);
 }

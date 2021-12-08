@@ -3,7 +3,7 @@ use bevy::{
 		App, Color,
 		IntoSystem,
 		DefaultPlugins,
-		WindowDescriptor
+		WindowDescriptor, SystemStage
 	},
 	render::pass::ClearColor
 };
@@ -28,6 +28,10 @@ fn main() {
 			)
 		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(setup::setup.system())
+		.add_startup_stage(
+			"game_setup_actors",
+			SystemStage::single(setup::spawn_player.system())
+		)
         .add_plugins(DefaultPlugins)
         .run();
 }
