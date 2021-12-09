@@ -1,5 +1,6 @@
 mod assets;
 mod plugins {
+	pub mod enemy;
 	pub mod player;
 }
 
@@ -8,7 +9,11 @@ use bevy::{
 	render::pass::ClearColor
 };
 
-use crate::plugins::player::PlayerPlugin;
+#[allow(unused)]
+use crate::plugins::{
+	enemy::EnemyPlugin,
+	player::PlayerPlugin
+};
 
 fn main() {
     App::build()
@@ -27,8 +32,9 @@ fn main() {
 					}
 			)
 		.insert_resource(ClearColor(Color::BLACK))
-        .add_startup_system(assets::materials.system())
+        .add_startup_system(assets::store.system())
         .add_plugins(DefaultPlugins)
+		// .add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
         .run();
 }

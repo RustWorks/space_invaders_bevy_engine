@@ -4,13 +4,12 @@ use bevy::{
 	input::Input
 };
 
-use crate::assets::{
-	Sprites,
-	WindowSize,
-	TIME_STEP
-};
+use crate::assets::*;
 
+pub struct Player;
+pub struct PlayerReady(bool);
 pub struct PlayerPlugin;
+
 impl Plugin for PlayerPlugin {
 	fn build(
 		&self,
@@ -24,17 +23,6 @@ impl Plugin for PlayerPlugin {
 			.add_system(r#move.system())
 			.add_system(shoot.system())
 			.add_system(shoot_move.system());
-	}
-}
-
-pub struct Player;
-pub struct PlayerReady(bool);
-pub struct Laser;
-
-pub struct Speed(f32);
-impl Default for Speed {
-	fn default() -> Self {
-		Self(500.0)
 	}
 }
 
@@ -100,7 +88,7 @@ pub fn r#move(
 
 pub fn shoot(
 	kbd: Res<Input<KeyCode>>,
-	sprites: Res<Sprites>,
+	lasers: Res<Lasers>,
 	mut cmds: Commands,
 	mut query: Query<
 		(
@@ -121,7 +109,7 @@ pub fn shoot(
 				cmds.spawn_bundle
 					(
 						SpriteBundle {
-							material: sprites.laser.clone(),
+							material: lasers.ferris.clone(),
 							transform: Transform {
 								translation: Vec3::new(x, y + 50.0, 0.0),
 
