@@ -1,12 +1,13 @@
 use bevy::prelude::*;
 
 // TODO: Load sprites from assets/store.ron instead
-pub const FERRIS: &str = r#"sprites\player\ferris.png"#;
-pub const FERRIS_LASER: &str = r#"sprites\player\laser.png"#;
+pub const FERRIS: &str = "sprites\\player\\ferris.png";
+pub const RED_LASER: &str = "sprites\\player\\laser.png";
 
 // TODO: Draw gopher sprite
-pub const GOPHER: &str = r#"sprites\gopher.png"#;
+pub const GOPHER: &str = "sprites\\enemy\\gopher.png";
 
+pub const SCALE: f32 = 0.8;
 pub const TIME_STEP: f32 = 1.0 / 60.0;
 
 pub struct Laser;
@@ -17,7 +18,7 @@ pub struct Sprites {
 }
 
 pub struct Lasers {
-	pub ferris: Handle<ColorMaterial>,
+	pub red: Handle<ColorMaterial>,
 }
 
 pub struct WindowSize {
@@ -43,8 +44,6 @@ pub fn store(
 			.get_primary_mut()
 			.unwrap();
 
-	cmds.spawn_bundle(OrthographicCameraBundle::new_2d());
-
 	cmds.insert_resource
 		(
 			Sprites {
@@ -60,8 +59,8 @@ pub fn store(
 	cmds.insert_resource
 		(
 			Lasers {
-				ferris: material.add(
-					server.load(FERRIS_LASER).into()
+				red: material.add(
+					server.load(RED_LASER).into()
 				)
 			}
 		);
@@ -73,4 +72,6 @@ pub fn store(
 				w: win.width()
 			}
 		);
+
+	cmds.spawn_bundle(OrthographicCameraBundle::new_2d());
 }

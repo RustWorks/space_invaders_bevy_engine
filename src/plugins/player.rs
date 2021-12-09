@@ -20,9 +20,9 @@ impl Plugin for PlayerPlugin {
 				"game_setup_actors",
 				SystemStage::single(spawn.system())
 			)
-			.add_system(r#move.system())
-			.add_system(shoot.system())
-			.add_system(shoot_move.system());
+			.add_system(movement.system())
+			.add_system(shooting.system())
+			.add_system(laser_movement.system());
 	}
 }
 
@@ -40,7 +40,7 @@ pub fn spawn(
 				material: sprites.ferris.clone(),
 				transform: Transform {
 					translation: Vec3::new(0.0, pos_btm + 70.0 / 2.0 + 5.0, 10.0),
-					scale: Vec3::new(0.8, 0.8, 1.1),
+					scale: Vec3::new(SCALE, SCALE, 1.1),
 
 					..Default::default()
 				},
@@ -52,7 +52,7 @@ pub fn spawn(
 		.insert(Speed::default());
 }
 
-pub fn r#move(
+pub fn movement(
 	kbd: Res<Input<KeyCode>>,
 	mut query: Query<
 		(
@@ -86,7 +86,7 @@ pub fn r#move(
 		}
 }
 
-pub fn shoot(
+pub fn shooting(
 	kbd: Res<Input<KeyCode>>,
 	lasers: Res<Lasers>,
 	mut cmds: Commands,
@@ -109,7 +109,7 @@ pub fn shoot(
 				cmds.spawn_bundle
 					(
 						SpriteBundle {
-							material: lasers.ferris.clone(),
+							material: lasers.red.clone(),
 							transform: Transform {
 								translation: Vec3::new(x, y + 50.0, 0.0),
 
@@ -130,7 +130,7 @@ pub fn shoot(
 		}
 }
 
-pub fn shoot_move(
+pub fn laser_movement(
 	window: Res<WindowSize>,
 	mut cmds: Commands,
 	mut query: Query<

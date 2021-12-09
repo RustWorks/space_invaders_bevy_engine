@@ -10,9 +10,12 @@ use bevy::{
 };
 
 #[allow(unused)]
-use crate::plugins::{
-	enemy::EnemyPlugin,
-	player::PlayerPlugin
+use crate::{
+	plugins::{
+		enemy::EnemyPlugin,
+		player::PlayerPlugin
+	},
+	assets::store
 };
 
 fn main() {
@@ -32,9 +35,9 @@ fn main() {
 					}
 			)
 		.insert_resource(ClearColor(Color::BLACK))
-        .add_startup_system(assets::store.system())
+        .add_startup_system(store.system())
         .add_plugins(DefaultPlugins)
-		// .add_plugin(EnemyPlugin)
+		.add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
         .run();
 }

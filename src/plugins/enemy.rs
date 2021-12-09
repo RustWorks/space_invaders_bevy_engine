@@ -6,10 +6,7 @@ use bevy::{
 };
 use rand::*;
 
-use crate::assets::{
-	Sprites,
-	WindowSize
-};
+use crate::assets::*;
 
 pub struct Enemy;
 pub struct EnemyPlugin;
@@ -31,7 +28,7 @@ impl Plugin for EnemyPlugin {
 	}
 }
 
-fn spawn(
+pub fn spawn(
 	sprites: Res<Sprites>,
 	window: Res<WindowSize>,
 	mut cmds: Commands,
@@ -57,19 +54,20 @@ fn spawn(
 				- h_span .. h_span
 			) as f32;
 
-		cmds.spawn_bundle(
-			SpriteBundle {
-				material: sprites.gopher.clone(),
-				transform: Transform {
-					translation: Vec3::new(x, y, 10.0),
-					scale: Vec3::new(0.8, 0.8, 1.0),
+		cmds.spawn_bundle
+			(
+				SpriteBundle {
+					material: sprites.gopher.clone(),
+					transform: Transform {
+						translation: Vec3::new(x, y, 10.0),
+						scale: Vec3::new(SCALE, SCALE, 1.0),
 
+						..Default::default()
+					},
 					..Default::default()
-				},
-				..Default::default()
-			}
-		).insert(Enemy);
+				}
+			).insert(Enemy);
 
-		active.0 += 1;
+			active.0 += 1;
 	}
 }
