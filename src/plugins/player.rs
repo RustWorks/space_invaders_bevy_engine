@@ -8,25 +8,8 @@ use crate::setup::*;
 
 pub struct Player;
 pub struct PlayerReady(bool);
-pub struct PlayerPlugin;
 
-impl Plugin for PlayerPlugin {
-	fn build(
-		&self,
-		app: &mut AppBuilder
-	) {
-		app
-			.add_startup_stage(
-				"game_setup_actors",
-				SystemStage::single(spawn.system())
-			)
-			.add_system(movement.system())
-			.add_system(shooting.system())
-			.add_system(laser_movement.system());
-	}
-}
-
-pub fn spawn(
+pub fn player_spawn(
 	mut cmds: Commands,
 	sprites: Res<Sprites>,
 	window: Res<WindowSize>

@@ -44,6 +44,11 @@ pub fn assets(
 			.get_primary_mut()
 			.unwrap();
 
+	// Enable hot reload
+	server
+		.watch_for_changes()
+		.unwrap();
+
 	cmds.insert_resource
 		(
 			Sprites {
@@ -74,5 +79,7 @@ pub fn assets(
 			}
 		);
 
-	cmds.spawn_bundle(OrthographicCameraBundle::new_2d());
+	cmds.spawn_bundle(
+		OrthographicCameraBundle::new_2d()
+	);
 }

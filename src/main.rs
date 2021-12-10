@@ -1,22 +1,18 @@
 mod setup;
-mod plugins {
-	pub mod enemy;
-	pub mod player;
-}
+mod plugins;
 
 use bevy::{
 	prelude::*,
 	render::pass::ClearColor
 };
-
 use serde::Deserialize;
 use ron::de::from_reader;
 
 #[allow(unused)]
 use crate::{
 	plugins::{
-		enemy::EnemyPlugin,
-		player::PlayerPlugin
+		EnemyPlugin,
+		PlayerPlugin
 	},
 	setup::assets,
 };

@@ -1,34 +1,14 @@
 // FIXME: Inspect why program panic instead of loading enemy
 
-use bevy::{
-	prelude::*,
-	core::FixedTimestep
-};
+use bevy::prelude::*;
 use rand::*;
 
 use crate::setup::*;
 
 pub struct Enemy;
-pub struct EnemyPlugin;
 pub struct ActiveEnemies(u32);
 
-impl Plugin for EnemyPlugin {
-	fn build(
-		&self,
-		app: &mut AppBuilder
-	) {
-		app
-			.add_system_set(
-				SystemSet::new()
-					.with_run_criteria(
-						FixedTimestep::step(1.0)
-					)
-					.with_system(spawn.system())
-			);
-	}
-}
-
-pub fn spawn(
+pub fn enemy_spawn(
 	sprites: Res<Sprites>,
 	window: Res<WindowSize>,
 	mut cmds: Commands,
