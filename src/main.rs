@@ -29,7 +29,6 @@ pub struct Settings {
 
 #[derive(Debug, Deserialize)]
 pub struct Win {
-	pub title: String,
 	pub width: f32,
 	pub height: f32,
 	pub vsync: bool,
@@ -73,7 +72,7 @@ fn main() {
 			(
 				WindowDescriptor
 					{
-						title: config.window.title.into(),
+						title: "Space Invaders!".into(),
 						width: config.window.width,
 						height: config.window.height,
 						vsync: config.window.vsync,
