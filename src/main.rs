@@ -37,6 +37,16 @@ pub struct Win {
 	pub cursor_visible: bool
 }
 
+fn close(
+	kbd: Res<Input<KeyCode>>
+) {
+	if kbd.pressed(KeyCode::Escape) {
+		println!("Goodbye!");
+
+		std::process::exit(0);
+	}
+}
+
 fn main() {
 	let path =
 		format!(
@@ -75,6 +85,7 @@ fn main() {
 			)
 		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(assets.system())
+		.add_system(close.system())
         .add_plugins(DefaultPlugins)
 		// .add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
