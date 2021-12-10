@@ -1,4 +1,4 @@
-// TODO: Inspect why program panic instead of loading enemy
+// FIXME: Inspect why program panic instead of loading enemy
 
 use bevy::{
 	prelude::*,
@@ -6,7 +6,7 @@ use bevy::{
 };
 use rand::*;
 
-use crate::assets::*;
+use crate::setup::*;
 
 pub struct Enemy;
 pub struct EnemyPlugin;

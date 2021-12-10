@@ -1,11 +1,11 @@
 use bevy::prelude::*;
 
 // TODO: Load sprites from assets/store.ron instead
-pub const FERRIS: &str = "sprites\\player\\ferris.png";
-pub const RED_LASER: &str = "sprites\\player\\laser.png";
+pub const FERRIS: &str = "sprites\\ferris.png";
+pub const RED_LASER: &str = "sprites\\laser.png";
 
 // TODO: Draw gopher sprite
-pub const GOPHER: &str = "sprites\\enemy\\gopher.png";
+pub const GOPHER: &str = "sprites\\ferris.png";
 
 pub const SCALE: f32 = 0.8;
 pub const TIME_STEP: f32 = 1.0 / 60.0;
@@ -33,7 +33,7 @@ impl Default for Speed {
 	}
 }
 
-pub fn store(
+pub fn assets(
 	server: Res<AssetServer>,
 	mut cmds: Commands,
 	mut windows: ResMut<Windows>,
@@ -56,6 +56,7 @@ pub fn store(
 			}
 		);
 
+	// TODO: Turn laser(s) from images to rectangles
 	cmds.insert_resource
 		(
 			Lasers {

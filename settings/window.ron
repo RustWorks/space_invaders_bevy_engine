@@ -1,0 +1,10 @@
+Settings(
+    window: Win(
+		title: "Space Invaders",
+		width: 1000.0,
+		height: 600.0,
+		vsync: true,
+		resizable: false,
+		cursor_visible: true,
+    )
+)

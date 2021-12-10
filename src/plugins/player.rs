@@ -4,7 +4,7 @@ use bevy::{
 	input::Input
 };
 
-use crate::assets::*;
+use crate::setup::*;
 
 pub struct Player;
 pub struct PlayerReady(bool);
