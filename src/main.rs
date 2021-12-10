@@ -3,7 +3,7 @@ mod plugins;
 
 use bevy::{
 	prelude::*,
-	render::pass::ClearColor
+	render::pass::ClearColor, diagnostic::{LogDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}
 };
 use serde::Deserialize;
 use ron::de::from_reader;
@@ -82,6 +82,8 @@ fn main() {
         .add_startup_system(assets.system())
 		.add_system(close.system())
         .add_plugins(DefaultPlugins)
+		.add_plugin(LogDiagnosticsPlugin::default())
+		.add_plugin(FrameTimeDiagnosticsPlugin::default())
 		// .add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
         .run();
