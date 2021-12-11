@@ -7,7 +7,3 @@ Cargo.lock
 
 # Build
 /target
-
-# Ignore this for now
-src/plugins/discord.rs
-settings/discord.ron

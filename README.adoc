@@ -11,18 +11,15 @@ At first, you have to clone it and build:
 git clone https://github.com/HeavyRain266/space_invaders
 
 cd space_invaders
-
-cargo build --release
 ....
 
-Next, you can edit settings in `settmgs/window.ron` and configure
+Optionally, you can edit settings in `settmgs/window.ron` and configure
 window:
 
 [source,rust]
 ----
 Settings(
     window: Win(
-        title: "Space Invaders",
         width: 1000.0,
         height: 600.0,
         vsync: true,
@@ -31,3 +28,16 @@ Settings(
     )
 )
 ----
+
+Now, compile game
+---
+cargo build --release
+---
+
+==== Controls:
+
+ESCAPE: Exit game
+
+WASD/Arrows: Control player
+
+SPACE: shoot

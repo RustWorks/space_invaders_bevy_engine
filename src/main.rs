@@ -91,5 +91,6 @@ fn main() {
 		.add_plugin(FrameTimeDiagnosticsPlugin::default())
 		.add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
+		// .add_plugin(DiscordPlugin)
         .run();
 }

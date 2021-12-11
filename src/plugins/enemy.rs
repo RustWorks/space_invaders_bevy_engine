@@ -1,5 +1,3 @@
-// FIXME: Inspect why program panic instead of loading enemy
-
 use bevy::prelude::*;
 use rand::*;
 

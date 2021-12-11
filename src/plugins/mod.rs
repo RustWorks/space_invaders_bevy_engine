@@ -7,6 +7,11 @@ use bevy::{
 	core::FixedTimestep
 };
 
+
+use self::discord::{
+	presence,
+	presence_error
+};
 use self::enemy::{
 	enemy_spawn,
 	ActiveEnemies
@@ -18,9 +23,20 @@ use self::player::{
 	player_laser_movement
 };
 
+pub struct DiscordPlugin;
 pub struct EnemyPlugin;
 pub struct PlayerPlugin;
-pub struct DiscordPlugin;
+
+impl Plugin for DiscordPlugin {
+	fn build(
+		&self,
+		app: &mut AppBuilder
+	) {
+		app.add_system(
+			presence.system().chain(presence_error.system())
+		);
+	}
+}
 
 impl Plugin for EnemyPlugin {
 	fn build(
