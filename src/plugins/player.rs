@@ -35,7 +35,7 @@ pub fn player_spawn(
 		.insert(Speed::default());
 }
 
-pub fn movement(
+pub fn player_movement(
 	kbd: Res<Input<KeyCode>>,
 	mut query: Query<
 		(
@@ -69,7 +69,7 @@ pub fn movement(
 		}
 }
 
-pub fn shooting(
+pub fn player_shooting(
 	kbd: Res<Input<KeyCode>>,
 	lasers: Res<Lasers>,
 	mut cmds: Commands,
@@ -113,7 +113,7 @@ pub fn shooting(
 		}
 }
 
-pub fn laser_movement(
+pub fn player_laser_movement(
 	window: Res<WindowSize>,
 	mut cmds: Commands,
 	mut query: Query<

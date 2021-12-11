@@ -8,9 +8,9 @@ use bevy::{
 
 use self::player::{
 	player_spawn,
-	movement,
-	shooting,
-	laser_movement
+	player_movement,
+	player_shooting,
+	player_laser_movement
 };
 use self::enemy::enemy_spawn;
 
@@ -43,8 +43,8 @@ impl Plugin for PlayerPlugin {
 				"game_setup_actors",
 				SystemStage::single(player_spawn.system())
 			)
-			.add_system(movement.system())
-			.add_system(shooting.system())
-			.add_system(laser_movement.system());
+			.add_system(player_movement.system())
+			.add_system(player_shooting.system())
+			.add_system(player_laser_movement.system());
 	}
 }

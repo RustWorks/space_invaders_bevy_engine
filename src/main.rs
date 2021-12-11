@@ -3,7 +3,11 @@ mod plugins;
 
 use bevy::{
 	prelude::*,
-	render::pass::ClearColor, diagnostic::{LogDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}
+	render::pass::ClearColor,
+	diagnostic::{
+		LogDiagnosticsPlugin,
+		FrameTimeDiagnosticsPlugin
+	}
 };
 use serde::Deserialize;
 use ron::de::from_reader;
@@ -32,7 +36,7 @@ pub struct Win {
 	pub cursor_visible: bool
 }
 
-fn close(
+fn exit_geme(
 	kbd: Res<Input<KeyCode>>
 ) {
 	if kbd.pressed(KeyCode::Escape) {
@@ -80,7 +84,7 @@ fn main() {
 			)
 		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(assets.system())
-		.add_system(close.system())
+		.add_system(exit_geme.system())
         .add_plugins(DefaultPlugins)
 		.add_plugin(LogDiagnosticsPlugin::default())
 		.add_plugin(FrameTimeDiagnosticsPlugin::default())
