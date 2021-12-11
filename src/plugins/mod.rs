@@ -1,21 +1,26 @@
 pub mod enemy;
 pub mod player;
+pub mod discord;
 
 use bevy::{
 	prelude::*,
 	core::FixedTimestep
 };
 
+use self::enemy::{
+	enemy_spawn,
+	ActiveEnemies
+};
 use self::player::{
 	player_spawn,
 	player_movement,
 	player_shooting,
 	player_laser_movement
 };
-use self::enemy::enemy_spawn;
 
 pub struct EnemyPlugin;
 pub struct PlayerPlugin;
+pub struct DiscordPlugin;
 
 impl Plugin for EnemyPlugin {
 	fn build(
@@ -28,7 +33,12 @@ impl Plugin for EnemyPlugin {
 					.with_run_criteria(
 						FixedTimestep::step(1.0)
 					)
-					.with_system(enemy_spawn.system())
+					.with_system(
+						enemy_spawn.system()
+					)
+			)
+			.insert_resource(
+				ActiveEnemies(0)
 			);
 	}
 }
@@ -41,10 +51,18 @@ impl Plugin for PlayerPlugin {
 		app
 			.add_startup_stage(
 				"game_setup_actors",
-				SystemStage::single(player_spawn.system())
+				SystemStage::single(
+					player_spawn.system()
+				)
 			)
-			.add_system(player_movement.system())
-			.add_system(player_shooting.system())
-			.add_system(player_laser_movement.system());
+			.add_system(
+				player_movement.system()
+			)
+			.add_system(
+				player_shooting.system()
+			)
+			.add_system(
+				player_laser_movement.system()
+			);
 	}
 }

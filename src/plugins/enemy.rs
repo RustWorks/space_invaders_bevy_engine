@@ -6,7 +6,7 @@ use rand::*;
 use crate::setup::*;
 
 pub struct Enemy;
-pub struct ActiveEnemies(u32);
+pub struct ActiveEnemies(pub u32);
 
 pub fn enemy_spawn(
 	sprites: Res<Sprites>,

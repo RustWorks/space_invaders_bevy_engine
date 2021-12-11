@@ -16,7 +16,8 @@ use ron::de::from_reader;
 use crate::{
 	plugins::{
 		EnemyPlugin,
-		PlayerPlugin
+		PlayerPlugin,
+		DiscordPlugin
 	},
 	setup::assets,
 };
@@ -88,7 +89,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
 		.add_plugin(LogDiagnosticsPlugin::default())
 		.add_plugin(FrameTimeDiagnosticsPlugin::default())
-		// .add_plugin(EnemyPlugin)
+		.add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
         .run();
 }
