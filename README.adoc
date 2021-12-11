@@ -1,6 +1,6 @@
 == Space Invaders
 
-Simple game implemented after watching youtube tutorials
+Simple game implemented after youtube tutorials
 https://www.youtube.com/watch?v=Yb3vInxzKGE[series].
 
 === How to play?
@@ -8,12 +8,23 @@ https://www.youtube.com/watch?v=Yb3vInxzKGE[series].
 At first, you have to clone it and build:
 
 ....
-git clone https://github.com/HeavyRain266/space_invaders
+git clone https://github.com/HeavyRain266/space_invaders.git
 
 cd space_invaders
 ....
 
-Optionally, you can edit settings in `settmgs/window.ron` and configure
+Now, compile and run game:
+
+[source,shell]
+----
+cargo build --release
+
+# Assets are having hardcoded windows-style path
+# so, game currently works only on Windows.
+.\target\release\space_invaders.exe
+----
+
+Alternatively, you can edit settings in `settmgs/window.ron` and compile.
 window:
 
 [source,rust]
@@ -29,15 +40,10 @@ Settings(
 )
 ----
 
-Now, compile game
----
-cargo build --release
----
+=== Controls:
 
-==== Controls:
+*Moving*: WASD
 
-ESCAPE: Exit game
+*Shooting*: Space
 
-WASD/Arrows: Control player
-
-SPACE: shoot
+*Exit*: Escape

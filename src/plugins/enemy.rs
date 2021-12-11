@@ -1,4 +1,7 @@
-use bevy::prelude::*;
+use bevy::{
+	prelude::*,
+	sprite::collide_aabb::collide
+};
 use rand::*;
 
 use crate::setup::*;
@@ -47,5 +50,64 @@ pub fn enemy_spawn(
 			).insert(Enemy);
 
 			active.0 += 1;
+	}
+}
+
+pub fn enemy_despawn(
+	mut cmds: Commands,
+	mut laser_query: Query<
+		(
+			Entity,
+			&Transform,
+			&Sprite,
+		),
+		With<Laser>,
+	>,
+	mut enemy_query: Query<
+		(
+			Entity,
+			&Transform,
+			&Sprite,
+		),
+		With<Enemy>,
+	>,
+	mut active: ResMut<ActiveEnemies>
+) {
+	for (
+		laser_entity,
+		laser_trans,
+		laser_sprite
+	) in laser_query.iter_mut() {
+		for (
+			enemy_entity,
+			enemy_trans,
+			enemy_sprite
+		) in enemy_query.iter_mut() {
+			let laser_scale =
+				Vec2::from(laser_trans.scale);
+
+			let enemy_scale =
+				Vec2::from(enemy_trans.scale);
+
+			let collision =
+				collide(
+					laser_trans.translation,
+					laser_sprite.size * laser_scale,
+					enemy_trans.translation,
+					enemy_sprite.size * enemy_scale,
+				);
+
+			if let Some(_) = collision {
+				cmds
+					.entity(enemy_entity)
+					.despawn();
+
+				active.0 -= 1;
+
+				cmds
+					.entity(laser_entity)
+					.despawn();
+			}
+		}
 	}
 }

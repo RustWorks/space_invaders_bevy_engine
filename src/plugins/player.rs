@@ -36,7 +36,7 @@ pub fn player_spawn(
 }
 
 pub fn player_movement(
-	kbd: Res<Input<KeyCode>>,
+	input: Res<Input<KeyCode>>,
 	mut query: Query<
 		(
 			&Speed,
@@ -45,12 +45,14 @@ pub fn player_movement(
 		With<Player>
 	>
 ) {
-	if let Ok((speed, mut transform)) =
-		query.single_mut() {
+	if let Ok((
+		speed,
+		mut transform
+	)) = query.single_mut() {
 			let dir_x =
-				if kbd.pressed(KeyCode::Left) || kbd.pressed(KeyCode::A) {
+				if input.pressed(KeyCode::A) {
 					-0.7
-				} else if kbd.pressed(KeyCode::Right) || kbd.pressed(KeyCode::D) {
+				} else if input.pressed(KeyCode::D) {
 					0.7
 				} else {
 					0.0
@@ -58,9 +60,9 @@ pub fn player_movement(
 				transform.translation.x += dir_x * speed.0 * TIME_STEP;
 
 			let dir_y =
-				if kbd.pressed(KeyCode::Up) || kbd.pressed(KeyCode::W) {
+				if input.pressed(KeyCode::W) {
 					0.7
-				} else if kbd.pressed(KeyCode::Down) || kbd.pressed(KeyCode::S) {
+				} else if input.pressed(KeyCode::S) {
 					-0.7
 				} else {
 					0.0
@@ -70,7 +72,7 @@ pub fn player_movement(
 }
 
 pub fn player_shooting(
-	kbd: Res<Input<KeyCode>>,
+	input: Res<Input<KeyCode>>,
 	lasers: Res<Lasers>,
 	mut cmds: Commands,
 	mut query: Query<
@@ -81,13 +83,15 @@ pub fn player_shooting(
 		With<Player>
 	>
 ) {
-	if let Ok((player_tf, mut ready)) =
-		query.single_mut() {
-			if ready.0 && kbd.pressed(KeyCode::Space) {
+	if let Ok((
+		player_trans,
+		mut player_ready
+	)) = query.single_mut() {
+			if player_ready.0 && input.pressed(KeyCode::Space) {
 				let x =
-					player_tf.translation.x;
+					player_trans.translation.x;
 				let y =
-					player_tf.translation.y;
+					player_trans.translation.y;
 
 				cmds.spawn_bundle
 					(
@@ -105,10 +109,10 @@ pub fn player_shooting(
 					.insert(Laser)
 					.insert(Speed::default());
 
-				ready.0 = false;
+				player_ready.0 = false;
 			}
-			if kbd.just_released(KeyCode::Space) {
-				ready.0 = true;
+			if input.just_released(KeyCode::Space) {
+				player_ready.0 = true;
 			}
 		}
 }
@@ -127,13 +131,13 @@ pub fn player_laser_movement(
 ) {
 	for (
 		laser_entity,
-		speed,
-		mut laser_tf,
+		laser_speed,
+		mut laser_trans,
 	) in query.iter_mut() {
 		let trans =
-			&mut laser_tf.translation;
+			&mut laser_trans.translation;
 
-			trans.y += speed.0 * TIME_STEP;
+			trans.y += laser_speed.0 * TIME_STEP;
 			if trans.y > window.h {
 				cmds
 					.entity(laser_entity)

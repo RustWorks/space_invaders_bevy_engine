@@ -4,10 +4,10 @@ mod plugins;
 use bevy::{
 	prelude::*,
 	render::pass::ClearColor,
-	diagnostic::{
-		LogDiagnosticsPlugin,
-		FrameTimeDiagnosticsPlugin
-	}
+	// diagnostic::{
+	// 	LogDiagnosticsPlugin,
+	// 	FrameTimeDiagnosticsPlugin
+	// }
 };
 use serde::Deserialize;
 use ron::de::from_reader;
@@ -17,7 +17,7 @@ use crate::{
 	plugins::{
 		EnemyPlugin,
 		PlayerPlugin,
-		DiscordPlugin
+		// DiscordPlugin
 	},
 	setup::assets,
 };
@@ -38,9 +38,9 @@ struct Win {
 }
 
 fn exit_geme(
-	kbd: Res<Input<KeyCode>>
+	input: Res<Input<KeyCode>>
 ) {
-	if kbd.pressed(KeyCode::Escape) {
+	if input.pressed(KeyCode::Escape) {
 		println!("Goodbye!");
 
 		std::process::exit(0);
@@ -87,10 +87,10 @@ fn main() {
         .add_startup_system(assets.system())
 		.add_system(exit_geme.system())
         .add_plugins(DefaultPlugins)
-		.add_plugin(LogDiagnosticsPlugin::default())
-		.add_plugin(FrameTimeDiagnosticsPlugin::default())
 		.add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
+		// .add_plugin(LogDiagnosticsPlugin::default())
+		// .add_plugin(FrameTimeDiagnosticsPlugin::default())
 		// .add_plugin(DiscordPlugin)
         .run();
 }

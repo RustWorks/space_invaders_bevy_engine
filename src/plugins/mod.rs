@@ -7,20 +7,22 @@ use bevy::{
 	core::FixedTimestep
 };
 
-
-use self::discord::{
-	presence,
-	presence_error
-};
-use self::enemy::{
-	enemy_spawn,
-	ActiveEnemies
-};
-use self::player::{
-	player_spawn,
-	player_movement,
-	player_shooting,
-	player_laser_movement
+use self::{
+	discord::{
+		presence,
+		presence_error
+	},
+	enemy::{
+		enemy_spawn,
+		enemy_despawn,
+		ActiveEnemies
+	},
+	player::{
+		player_spawn,
+		player_movement,
+		player_shooting,
+		player_laser_movement
+	}
 };
 
 pub struct DiscordPlugin;
@@ -33,7 +35,11 @@ impl Plugin for DiscordPlugin {
 		app: &mut AppBuilder
 	) {
 		app.add_system(
-			presence.system().chain(presence_error.system())
+			presence
+				.system()
+				.chain(
+					presence_error.system()
+				)
 		);
 	}
 }
@@ -55,6 +61,9 @@ impl Plugin for EnemyPlugin {
 			)
 			.insert_resource(
 				ActiveEnemies(0)
+			)
+			.add_system(
+				enemy_despawn.system()
 			);
 	}
 }

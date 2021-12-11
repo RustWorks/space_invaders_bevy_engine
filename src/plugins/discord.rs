@@ -10,7 +10,8 @@ use discord_rich_presence::{
 };
 
 pub fn presence() -> Result<(), Box<dyn Error>> {
-    let mut client = new_client("919271943843237919")?;
+    let mut client =
+		new_client("919271943843237919")?;
 
     client.connect()?;
 
