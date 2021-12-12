@@ -24,17 +24,17 @@ use crate::{
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-pub struct Settings {
+struct Settings {
 	window: Win
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Win {
-	pub width: f32,
-	pub height: f32,
-	pub vsync: bool,
-	pub resizable: bool,
-	pub cursor_visible: bool
+struct Win {
+	width: f32,
+	height: f32,
+	vsync: bool,
+	resizable: bool,
+	cursor_visible: bool
 }
 
 fn exit_geme(
