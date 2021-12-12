@@ -4,9 +4,10 @@ mod plugins;
 use bevy::{
 	prelude::*,
 	render::pass::ClearColor,
+	window::WindowMode,
 	// diagnostic::{
-	// 	LogDiagnosticsPlugin,
-	// 	FrameTimeDiagnosticsPlugin
+		// LogDiagnosticsPlugin,
+		// FrameTimeDiagnosticsPlugin
 	// }
 };
 use serde::Deserialize;
@@ -19,7 +20,11 @@ use crate::{
 		PlayerPlugin,
 		// DiscordPlugin
 	},
-	setup::assets,
+	setup::{
+		assets,
+		exit_geme,
+		fullscreen,
+	},
 };
 
 #[allow(dead_code)]
@@ -35,16 +40,6 @@ struct Win {
 	vsync: bool,
 	resizable: bool,
 	cursor_visible: bool
-}
-
-fn exit_geme(
-	input: Res<Input<KeyCode>>
-) {
-	if input.pressed(KeyCode::Escape) {
-		println!("Goodbye!");
-
-		std::process::exit(0);
-	}
 }
 
 fn main() {
@@ -74,6 +69,7 @@ fn main() {
 				WindowDescriptor
 					{
 						title: "Space Invaders!".into(),
+						mode: WindowMode::Windowed,
 						width: config.window.width,
 						height: config.window.height,
 						vsync: config.window.vsync,
@@ -85,6 +81,7 @@ fn main() {
 			)
 		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(assets.system())
+		.add_system(fullscreen.system())
 		.add_system(exit_geme.system())
         .add_plugins(DefaultPlugins)
 		.add_plugin(EnemyPlugin)

@@ -42,8 +42,12 @@ Settings(
 
 === Controls:
 
-*Moving*: WASD
+*Moving*: `WASD`
 
-*Shooting*: Space
+*Shooting*: `Space`
 
-*Exit*: Escape
+*Fullscreen*:
+
+Press `F` key to open and `Escape` to close
+
+*Exit*: `Delete`

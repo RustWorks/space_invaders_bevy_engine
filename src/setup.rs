@@ -1,4 +1,7 @@
-use bevy::prelude::*;
+use bevy::{
+	prelude::*,
+	window::WindowMode
+};
 
 // TODO: Create gopher sprite
 pub const FERRIS: &str = "sprites\\ferris.png";
@@ -83,4 +86,42 @@ pub fn assets(
 	cmds.spawn_bundle(
 		OrthographicCameraBundle::new_2d()
 	);
+}
+
+pub fn exit_geme(
+	input: Res<Input<KeyCode>>
+) {
+	if input.pressed(
+		KeyCode::Delete
+	) {
+		println!("Goodbye!");
+
+		std::process::exit(0);
+	}
+}
+
+pub fn fullscreen(
+	input: Res<Input<KeyCode>>,
+	mut windows: ResMut<Windows>
+) {
+	let win =
+		windows
+			.get_primary_mut()
+			.unwrap();
+
+	if input.just_pressed(
+		KeyCode::F
+	) {
+		win.set_mode(
+			WindowMode::Fullscreen {
+				use_size: false
+			}
+		)
+	} else if input.just_pressed(
+		KeyCode::Escape
+	) {
+		win.set_mode(
+			WindowMode::Windowed
+		)
+	}
 }
