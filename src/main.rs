@@ -1,29 +1,32 @@
 mod setup;
 mod plugins;
 
+use std::{
+	fs::File,
+	process::exit
+};
+
 use bevy::{
 	prelude::*,
 	render::pass::ClearColor,
 	window::WindowMode,
 	// diagnostic::{
-		// LogDiagnosticsPlugin,
-		// FrameTimeDiagnosticsPlugin
+	// 	LogDiagnosticsPlugin,
+	// 	FrameTimeDiagnosticsPlugin
 	// }
 };
 use serde::Deserialize;
 use ron::de::from_reader;
 
-#[allow(unused)]
 use crate::{
-	plugins::{
-		EnemyPlugin,
-		PlayerPlugin,
-		// DiscordPlugin
-	},
 	setup::{
 		assets,
 		exit_geme,
 		fullscreen,
+	},
+	plugins::{
+		EnemyPlugin,
+		PlayerPlugin
 	},
 };
 
@@ -50,16 +53,15 @@ fn main() {
 		);
 
 	let file =
-		std::fs::File::open(&path)
-			.expect("Failed opening file");
+		File::open(&path).expect("Failed opening file");
 
 	let config: Settings =
 		match from_reader(file) {
-			Ok(x) => x,
+			Ok(o) => o,
 			Err(e) => {
 				println!("Failed to load config: {}", e);
 
-			std::process::exit(1);
+			exit(1);
 		}
 	};
 
@@ -88,6 +90,5 @@ fn main() {
 		.add_plugin(PlayerPlugin)
 		// .add_plugin(LogDiagnosticsPlugin::default())
 		// .add_plugin(FrameTimeDiagnosticsPlugin::default())
-		// .add_plugin(DiscordPlugin)
         .run();
 }
