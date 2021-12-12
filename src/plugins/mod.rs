@@ -1,5 +1,6 @@
 pub mod enemy;
 pub mod player;
+pub mod discord;
 
 use bevy::{
 	prelude::*,
@@ -17,11 +18,33 @@ use self::{
 		player_movement,
 		player_shooting,
 		player_laser_movement
+	},
+	discord::{
+		presence,
+		presence_error
 	}
 };
 
+
+
 pub struct EnemyPlugin;
 pub struct PlayerPlugin;
+pub struct DiscordPlugin;
+
+impl Plugin for DiscordPlugin {
+	fn build(
+		&self,
+		app: &mut AppBuilder
+	) {
+		app.add_system(
+			presence
+				.system()
+				.chain(
+					presence_error.system()
+				)
+		);
+	}
+}
 
 impl Plugin for EnemyPlugin {
 	fn build(

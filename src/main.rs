@@ -10,10 +10,10 @@ use bevy::{
 	prelude::*,
 	render::pass::ClearColor,
 	window::WindowMode,
-	// diagnostic::{
-	// 	LogDiagnosticsPlugin,
-	// 	FrameTimeDiagnosticsPlugin
-	// }
+	diagnostic::{
+		LogDiagnosticsPlugin,
+		FrameTimeDiagnosticsPlugin
+	}
 };
 use serde::Deserialize;
 use ron::de::from_reader;
@@ -26,7 +26,8 @@ use crate::{
 	},
 	plugins::{
 		EnemyPlugin,
-		PlayerPlugin
+		PlayerPlugin,
+		DiscordPlugin
 	},
 };
 
@@ -88,7 +89,8 @@ fn main() {
         .add_plugins(DefaultPlugins)
 		.add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
-		// .add_plugin(LogDiagnosticsPlugin::default())
-		// .add_plugin(FrameTimeDiagnosticsPlugin::default())
+		.add_plugin(DiscordPlugin)
+		.add_plugin(LogDiagnosticsPlugin::default())
+		.add_plugin(FrameTimeDiagnosticsPlugin::default())
         .run();
 }
