@@ -7,17 +7,8 @@ use bevy::{
 };
 
 use self::{
-	enemy::{
-		enemy_spawn,
-		enemy_despawn,
-		ActiveEnemies
-	},
-	player::{
-		player_spawn,
-		player_movement,
-		player_shooting,
-		player_laser_movement
-	}
+	enemy::*,
+	player::*
 };
 
 pub struct EnemyPlugin;
@@ -31,19 +22,11 @@ impl Plugin for EnemyPlugin {
 		app
 			.add_system_set(
 				SystemSet::new()
-					.with_run_criteria(
-						FixedTimestep::step(1.0)
-					)
-					.with_system(
-						enemy_spawn.system()
-					)
+					.with_run_criteria(FixedTimestep::step(1.0))
+					.with_system(enemy_spawn.system())
 			)
-			.insert_resource(
-				ActiveEnemies(0)
-			)
-			.add_system(
-				enemy_despawn.system()
-			);
+			.insert_resource(ActiveEnemies(0))
+			.add_system(enemy_despawn.system());
 	}
 }
 
@@ -54,19 +37,13 @@ impl Plugin for PlayerPlugin {
 	) {
 		app
 			.add_startup_stage(
-				"game_setup_actors",
+				"setup_actors",
 				SystemStage::single(
 					player_spawn.system()
 				)
 			)
-			.add_system(
-				player_movement.system()
-			)
-			.add_system(
-				player_shooting.system()
-			)
-			.add_system(
-				player_laser_movement.system()
-			);
+			.add_system(player_movement.system())
+			.add_system(player_shooting.system())
+			.add_system(player_laser_movement.system());
 	}
 }

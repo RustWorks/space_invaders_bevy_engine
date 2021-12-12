@@ -1,42 +1,20 @@
+use std::process::exit;
+
 use bevy::{
 	prelude::*,
 	window::WindowMode
 };
 
-// TODO: Create gopher sprite
-pub const FERRIS: &str = "sprites\\ferris.png";
-pub const GOPHER: &str = "sprites\\ferris.png";
+use crate::types::*;
 
-#[allow(unused)]
-pub const BLUE_LASER: &str = "sprites\\blue_laser.png";
-pub const RED_LASER: &str = "sprites\\red_laser.png";
-
-pub const SCALE: f32 = 0.8;
-pub const TIME_STEP: f32 = 1.0 / 60.0;
-
-pub struct Laser;
-
-pub struct Sprites {
-	pub ferris: Handle<ColorMaterial>,
-	pub gopher: Handle<ColorMaterial>,
-}
-
-pub struct Lasers {
-	pub red: Handle<ColorMaterial>,
-}
-
-pub struct WindowSize {
-	pub h: f32,
-	pub w: f32
-}
-
-pub struct Speed(pub f32);
+// Default speed value
 impl Default for Speed {
 	fn default() -> Self {
 		Self(500.0)
 	}
 }
 
+// Asset loader
 pub fn assets(
 	server: Res<AssetServer>,
 	mut cmds: Commands,
@@ -53,53 +31,53 @@ pub fn assets(
 		.watch_for_changes()
 		.unwrap();
 
-	cmds.insert_resource
-		(
-			Sprites {
-				ferris: material.add(
-					server.load(FERRIS).into()
-				),
-				gopher: material.add(
-					server.load(GOPHER).into()
-				),
-			}
-		);
+	// Load characters
+	cmds.insert_resource(
+		Sprites {
+			ferris: material.add(
+				server.load(FERRIS).into()
+			),
+			gopher: material.add(
+				server.load(GOPHER).into()
+			)
+		}
+	);
 
 	// TODO: Turn laser(s) from images to rectangles
-	cmds.insert_resource
-		(
-			Lasers {
-				red: material.add(
-					server.load(RED_LASER).into()
-				)
-			}
-		);
-
-	cmds.insert_resource
-		(
-			WindowSize {
-				h: win.height(),
-				w: win.width()
-			}
-		);
-
-	cmds.spawn_bundle(
-		OrthographicCameraBundle::new_2d()
+	// Load lasers
+	cmds.insert_resource(
+		Lasers {
+			red: material.add(
+				server.load(RED_LASER).into()
+			)
+		}
 	);
+
+	// Get window size
+	cmds.insert_resource(
+		WindowSize {
+			h: win.height(),
+			w: win.width()
+		}
+	);
+
+	// Setup 2D camera view
+	cmds.spawn_bundle(OrthographicCameraBundle::new_2d());
 }
 
+// Press "Delete" to exit game
 pub fn exit_geme(
 	input: Res<Input<KeyCode>>
 ) {
-	if input.pressed(
-		KeyCode::Delete
-	) {
+	if input.pressed(KeyCode::Delete) {
 		println!("Goodbye!");
 
-		std::process::exit(0);
+		exit(0);
 	}
 }
 
+// Press "F" to enable fullscreen
+// Press "Escape" to disable it
 pub fn fullscreen(
 	input: Res<Input<KeyCode>>,
 	mut windows: ResMut<Windows>
@@ -109,19 +87,13 @@ pub fn fullscreen(
 			.get_primary_mut()
 			.unwrap();
 
-	if input.just_pressed(
-		KeyCode::F
-	) {
+	if input.just_pressed(KeyCode::F) {
 		win.set_mode(
 			WindowMode::Fullscreen {
 				use_size: false
 			}
 		)
-	} else if input.just_pressed(
-		KeyCode::Escape
-	) {
-		win.set_mode(
-			WindowMode::Windowed
-		)
+	} else if input.just_pressed(KeyCode::Escape) {
+		win.set_mode(WindowMode::Windowed)
 	}
 }

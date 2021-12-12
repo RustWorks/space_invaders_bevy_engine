@@ -4,10 +4,11 @@ use bevy::{
 	input::Input
 };
 
-use crate::setup::*;
+use crate::types::*;
 
+// Player's types
 pub struct Player;
-pub struct PlayerReady(bool);
+pub struct PlayerReady(pub bool);
 
 pub fn player_spawn(
 	mut cmds: Commands,
@@ -16,7 +17,7 @@ pub fn player_spawn(
 ) {
 	let pos_btm = -window.h / 2.0;
 
-	// Spawn ferris
+	// Spawn player's sprite
 	cmds.spawn_bundle
 		(
 			SpriteBundle {
@@ -35,6 +36,7 @@ pub fn player_spawn(
 		.insert(Speed::default());
 }
 
+// Uses "WASD" for movement
 pub fn player_movement(
 	input: Res<Input<KeyCode>>,
 	mut query: Query<
@@ -46,8 +48,8 @@ pub fn player_movement(
 	>
 ) {
 	if let Ok((
-		speed,
-		mut transform
+		player_speed,
+		mut player_trans
 	)) = query.single_mut() {
 			let dir_x =
 				if input.pressed(KeyCode::A) {
@@ -57,7 +59,7 @@ pub fn player_movement(
 				} else {
 					0.0
 				};
-				transform.translation.x += dir_x * speed.0 * TIME_STEP;
+				player_trans.translation.x += dir_x * player_speed.0 * TIME_STEP;
 
 			let dir_y =
 				if input.pressed(KeyCode::W) {
@@ -67,13 +69,14 @@ pub fn player_movement(
 				} else {
 					0.0
 				};
-				transform.translation.y += dir_y * speed.0 * TIME_STEP;
+				player_trans.translation.y += dir_y * player_speed.0 * TIME_STEP;
 		}
 }
 
+// Spawn laser sprite on
 pub fn player_shooting(
 	input: Res<Input<KeyCode>>,
-	lasers: Res<Lasers>,
+	red_laser: Res<Lasers>,
 	mut cmds: Commands,
 	mut query: Query<
 		(
@@ -93,21 +96,20 @@ pub fn player_shooting(
 				let y =
 					player_trans.translation.y;
 
-				cmds.spawn_bundle
-					(
-						SpriteBundle {
-							material: lasers.red.clone(),
+				cmds.spawn_bundle(
+					SpriteBundle {
+						material: red_laser.red.clone(),
 							transform: Transform {
 								translation: Vec3::new(x, y + 50.0, 0.0),
 
 								..Default::default()
 							},
 							..Default::default()
-						}
+					}
 
-					)
-					.insert(Laser)
-					.insert(Speed::default());
+				)
+				.insert(Laser)
+				.insert(Speed::default());
 
 				player_ready.0 = false;
 			}
@@ -130,17 +132,17 @@ pub fn player_laser_movement(
 	>
 ) {
 	for (
-		laser_entity,
-		laser_speed,
-		mut laser_trans,
+		red_laser_entity,
+		red_laser_speed,
+		mut red_laser_trans,
 	) in query.iter_mut() {
 		let trans =
-			&mut laser_trans.translation;
+			&mut red_laser_trans.translation;
 
-			trans.y += laser_speed.0 * TIME_STEP;
+			trans.y += red_laser_speed.0 * TIME_STEP;
 			if trans.y > window.h {
 				cmds
-					.entity(laser_entity)
+					.entity(red_laser_entity)
 					.despawn();
 			}
 	}

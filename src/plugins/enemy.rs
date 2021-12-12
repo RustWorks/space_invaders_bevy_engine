@@ -4,11 +4,13 @@ use bevy::{
 };
 use rand::*;
 
-use crate::setup::*;
+use crate::types::*;
 
+// Enemy's types
 pub struct Enemy;
 pub struct ActiveEnemies(pub u32);
 
+// Spawn enemy's sprite
 pub fn enemy_spawn(
 	sprites: Res<Sprites>,
 	window: Res<WindowSize>,
@@ -26,36 +28,31 @@ pub fn enemy_spawn(
 			window.h / 2.0 - 100.0;
 
 		let x =
-			rng.gen_range(
-				- w_span .. w_span
-			) as f32;
+			rng.gen_range(-w_span..w_span) as f32;
 
 		let y =
-			rng.gen_range(
-				- h_span .. h_span
-			) as f32;
+			rng.gen_range(-h_span..h_span) as f32;
 
-		cmds.spawn_bundle
-			(
-				SpriteBundle {
-					material: sprites.gopher.clone(),
-					transform: Transform {
-						translation: Vec3::new(x, y, 10.0),
-						scale: Vec3::new(SCALE, SCALE, 1.0),
+		cmds.spawn_bundle(
+			SpriteBundle {
+				material: sprites.gopher.clone(),
+				transform: Transform {
+					translation: Vec3::new(x, y, 10.0),
+					scale: Vec3::new(SCALE, SCALE, 1.0),
 
-						..Default::default()
-					},
 					..Default::default()
-				}
-			).insert(Enemy);
+				},
+				..Default::default()
+			}
+		).insert(Enemy);
 
-			active.0 += 1;
+		active.0 += 1;
 	}
 }
 
 pub fn enemy_despawn(
 	mut cmds: Commands,
-	mut laser_query: Query<
+	mut blue_laser_query: Query<
 		(
 			Entity,
 			&Transform,
@@ -74,25 +71,25 @@ pub fn enemy_despawn(
 	mut active: ResMut<ActiveEnemies>
 ) {
 	for (
-		laser_entity,
-		laser_trans,
-		laser_sprite
-	) in laser_query.iter_mut() {
+		blue_laser_entity,
+		blue_laser_trans,
+		blue_laser_sprite
+	) in blue_laser_query.iter_mut() {
 		for (
 			enemy_entity,
 			enemy_trans,
 			enemy_sprite
 		) in enemy_query.iter_mut() {
-			let laser_scale =
-				Vec2::from(laser_trans.scale);
+			let blue_laser_scale =
+				Vec2::from(blue_laser_trans.scale);
 
 			let enemy_scale =
 				Vec2::from(enemy_trans.scale);
 
 			let collision =
 				collide(
-					laser_trans.translation,
-					laser_sprite.size * laser_scale,
+					blue_laser_trans.translation,
+					blue_laser_sprite.size * blue_laser_scale,
 					enemy_trans.translation,
 					enemy_sprite.size * enemy_scale,
 				);
@@ -105,7 +102,7 @@ pub fn enemy_despawn(
 				active.0 -= 1;
 
 				cmds
-					.entity(laser_entity)
+					.entity(blue_laser_entity)
 					.despawn();
 			}
 		}

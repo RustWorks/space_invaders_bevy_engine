@@ -1,5 +1,5 @@
 Settings(
-    window: Win(
+    window: WinOpts(
 		width: 1000.0,
 		height: 600.0,
 		vsync: true,

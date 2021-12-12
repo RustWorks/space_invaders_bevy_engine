@@ -1,3 +1,4 @@
+mod types;
 mod setup;
 mod plugins;
 
@@ -8,79 +9,47 @@ use std::{
 
 use bevy::{
 	prelude::*,
-	render::pass::ClearColor,
-	window::WindowMode,
-	// diagnostic::{
-	// 	LogDiagnosticsPlugin,
-	// 	FrameTimeDiagnosticsPlugin
-	// }
+	render::pass::ClearColor
 };
-use serde::Deserialize;
 use ron::de::from_reader;
 
 use crate::{
-	setup::{
-		assets,
-		exit_geme,
-		fullscreen,
-	},
-	plugins::{
-		EnemyPlugin,
-		PlayerPlugin
-	},
+	types::*,
+	setup::*,
+	plugins::*
 };
-
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-struct Settings {
-	window: Win
-}
-
-#[derive(Debug, Deserialize)]
-struct Win {
-	width: f32,
-	height: f32,
-	vsync: bool,
-	resizable: bool,
-	cursor_visible: bool
-}
 
 fn main() {
 	let path =
-		format!(
-			"{}\\settings\\window.ron",
-			env!("CARGO_MANIFEST_DIR")
-		);
+		format!(r#"{}\settings\settings.ron"#, env!("CARGO_MANIFEST_DIR"));
 
-	let file =
+	let open =
 		File::open(&path).expect("Failed opening file");
 
 	let config: Settings =
-		match from_reader(file) {
+		match from_reader(open) {
 			Ok(o) => o,
 			Err(e) => {
 				println!("Failed to load config: {}", e);
 
-			exit(1);
+				exit(1);
 		}
 	};
 
     App::build()
-        .insert_resource
-			(
-				WindowDescriptor
-					{
-						title: "Space Invaders!".into(),
-						mode: WindowMode::Windowed,
-						width: config.window.width,
-						height: config.window.height,
-						vsync: config.window.vsync,
-						resizable: config.window.resizable,
-						cursor_visible: config.window.cursor_visible,
+        .insert_resource(
+			WindowDescriptor
+				{
+					title: "Space Invaders!".into(),
+					width: config.window.width,
+					height: config.window.height,
+					vsync: config.window.vsync,
+					resizable: config.window.resizable,
+					cursor_visible: config.window.cursor_visible,
 
-						..Default::default()
-					}
-			)
+					..Default::default()
+				}
+		)
 		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(assets.system())
 		.add_system(fullscreen.system())
@@ -88,7 +57,5 @@ fn main() {
         .add_plugins(DefaultPlugins)
 		.add_plugin(EnemyPlugin)
 		.add_plugin(PlayerPlugin)
-		// .add_plugin(LogDiagnosticsPlugin::default())
-		// .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .run();
 }
