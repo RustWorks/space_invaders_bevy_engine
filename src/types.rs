@@ -1,17 +1,9 @@
 use bevy::prelude::*;
 
-// TODO: Finish gopher & blue laser sprites
-pub const FERRIS: &str = r#"sprites\ferris.png"#;
-pub const GOPHER: &str = r#"sprites\ferris.png"#;
-pub const RED_LASER: &str = r#"sprites\red_laser.png"#;
-
-#[allow(unused)]
-pub const BLUE_LASER: &str = r#"sprites\blue_laser.png"#;
-
+// Shared types
 pub const SCALE: f32 = 0.8;
 pub const TIME_STEP: f32 = 1.0 / 60.0;
 
-// Shared types
 pub struct Laser;
 pub struct Speed(pub f32);
 

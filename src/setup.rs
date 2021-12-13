@@ -26,29 +26,31 @@ pub fn assets(
 			.get_primary_mut()
 			.unwrap();
 
-	// Enable hot reload
-	server
-		.watch_for_changes()
-		.unwrap();
-
 	// Load characters
 	cmds.insert_resource(
 		LoadActor {
 			ferris: material.add(
-				server.load(FERRIS).into()
+				server
+					.load("actors\\ferris.png")
+					.into()
 			),
+			// TODO: Finish gopher sprite
 			gopher: material.add(
-				server.load(GOPHER).into()
+				server
+					.load("actors\\ferris.png")
+					.into()
 			)
 		}
 	);
 
-	// TODO: Turn laser(s) from images to rectangles
 	// Load lasers
+	// TODO: Turn laser(s) from images to rectangles
 	cmds.insert_resource(
 		LoadLaser {
 			red: material.add(
-				server.load(RED_LASER).into()
+				server
+					.load("lasers\\red.png")
+					.into()
 			)
 		}
 	);
@@ -60,6 +62,9 @@ pub fn assets(
 			w: win.width()
 		}
 	);
+
+	// Enable hot reload
+	server.watch_for_changes().unwrap();
 
 	// Setup 2D camera view
 	cmds.spawn_bundle(OrthographicCameraBundle::new_2d());
