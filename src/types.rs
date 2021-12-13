@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use serde::Deserialize;
 
 // TODO: Finish gopher & blue laser sprites
 pub const FERRIS: &str = r#"sprites\ferris.png"#;
@@ -31,20 +30,4 @@ pub struct LoadLaser {
 pub struct GetWinSize {
 	pub h: f32,
 	pub w: f32
-}
-
-// Deserialize settings.ron
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-pub struct LoadSettings {
-	pub window: WinOpts
-}
-
-#[derive(Debug, Deserialize)]
-pub struct WinOpts {
-	pub width: f32,
-	pub height: f32,
-	pub vsync: bool,
-	pub resizable: bool,
-	pub cursor_visible: bool
 }

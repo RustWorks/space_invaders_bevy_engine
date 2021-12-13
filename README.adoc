@@ -5,7 +5,7 @@ https://www.youtube.com/watch?v=Yb3vInxzKGE[series].
 
 === How to play?
 
-At first, you have to clone it and build:
+At first, you have to get source:
 
 ....
 git clone https://github.com/HeavyRain266/space_invaders.git
@@ -22,22 +22,6 @@ cargo build --release
 # Assets are having hardcoded windows-style path
 # so, game currently works only on Windows.
 .\target\release\space_invaders.exe
-----
-
-Alternatively, you can edit settings in `settmgs/window.ron` and compile.
-window:
-
-[source,rust]
-----
-Settings(
-    window: Win(
-        width: 1000.0,
-        height: 600.0,
-        vsync: true,
-        resizable: false,
-        cursor_visible: true,
-    )
-)
 ----
 
 === Controls:

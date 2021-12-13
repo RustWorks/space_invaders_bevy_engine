@@ -2,53 +2,29 @@ mod types;
 mod setup;
 mod plugins;
 
-use std::{
-	fs::File,
-	process::exit
-};
-
 use bevy::{
 	prelude::*,
 	render::pass::ClearColor
 };
-use ron::de::from_reader;
 
 use crate::{
-	types::*,
 	setup::*,
 	plugins::*
 };
 
 fn main() {
-	let path =
-		format!(r#"{}\settings\settings.ron"#, env!("CARGO_MANIFEST_DIR"));
-
-	let open =
-		File::open(&path).expect("Failed opening file");
-
-	let set: LoadSettings =
-		match from_reader(open) {
-			Ok(o) => o,
-			Err(e) => {
-				println!("Failed to load config: {}", e);
-
-				exit(1);
-		}
-	};
-
-    App::build()
-        .insert_resource(
+	App::build()
+		.insert_resource(
 			WindowDescriptor
 				{
 					title: "Space Invaders!".into(),
-					width: set.window.width,
-					height: set.window.height,
-					vsync: set.window.vsync,
-					resizable: set.window.resizable,
-					cursor_visible: set.window.cursor_visible,
+					width: 1000.0,
+					height: 600.0,
+					vsync: true,
+					resizable: false,
 
 					..Default::default()
-				}
+			}
 		)
 		.insert_resource(ClearColor(Color::BLACK))
         .add_startup_system(assets.system())
