@@ -12,7 +12,7 @@ pub struct ActiveEnemies(pub u32);
 
 // Spawn enemy's sprite
 pub fn enemy_spawn(
-	sprite: Res<LoadSprite>,
+	actor: Res<LoadActor>,
 	win_size: Res<GetWinSize>,
 	mut cmds: Commands,
 	mut active_enemy: ResMut<ActiveEnemies>,
@@ -35,7 +35,7 @@ pub fn enemy_spawn(
 
 		cmds.spawn_bundle(
 			SpriteBundle {
-				material: sprite.gopher.clone(),
+				material: actor.gopher.clone(),
 				transform: Transform {
 					translation: Vec3::new(x, y, 10.0),
 					scale: Vec3::new(SCALE, SCALE, 1.0),
@@ -86,7 +86,7 @@ pub fn enemy_despawn(
 			let enemy_scale =
 				Vec2::from(enemy_trans.scale);
 
-			let collision =
+			let on_collision =
 				collide(
 					blue_laser_trans.translation,
 					blue_laser_sprite.size * blue_laser_scale,
@@ -94,7 +94,7 @@ pub fn enemy_despawn(
 					enemy_sprite.size * enemy_scale,
 				);
 
-			if let Some(_) = collision {
+			if let Some(_) = on_collision {
 				cmds
 					.entity(enemy_entity)
 					.despawn();

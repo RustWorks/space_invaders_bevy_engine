@@ -11,7 +11,7 @@ pub struct Player;
 pub struct PlayerReady(pub bool);
 
 pub fn player_spawn(
-	sprite: Res<LoadSprite>,
+	actor: Res<LoadActor>,
 	win_size: Res<GetWinSize>,
 	mut cmds: Commands
 ) {
@@ -21,7 +21,7 @@ pub fn player_spawn(
 	cmds.spawn_bundle
 		(
 			SpriteBundle {
-				material: sprite.ferris.clone(),
+				material: actor.ferris.clone(),
 				transform: Transform {
 					translation: Vec3::new(0.0, pos_btm + 70.0 / 2.0 + 5.0, 10.0),
 					scale: Vec3::new(SCALE, SCALE, 1.1),
@@ -76,7 +76,7 @@ pub fn player_movement(
 // Spawn laser sprite on
 pub fn player_shooting(
 	input: Res<Input<KeyCode>>,
-	red_laser: Res<LoadLaser>,
+	laser: Res<LoadLaser>,
 	mut cmds: Commands,
 	mut query: Query<
 		(
@@ -98,7 +98,7 @@ pub fn player_shooting(
 
 				cmds.spawn_bundle(
 					SpriteBundle {
-						material: red_laser.red.clone(),
+						material: laser.red.clone(),
 							transform: Transform {
 								translation: Vec3::new(x, y + 50.0, 0.0),
 

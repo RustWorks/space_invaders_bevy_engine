@@ -33,7 +33,7 @@ pub fn assets(
 
 	// Load characters
 	cmds.insert_resource(
-		LoadSprite {
+		LoadActor {
 			ferris: material.add(
 				server.load(FERRIS).into()
 			),

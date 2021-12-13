@@ -16,7 +16,7 @@ pub struct Laser;
 pub struct Speed(pub f32);
 
 // Sprite loader
-pub struct LoadSprite {
+pub struct LoadActor {
 	pub ferris: Handle<ColorMaterial>,
 	pub gopher: Handle<ColorMaterial>,
 }
