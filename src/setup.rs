@@ -33,7 +33,7 @@ pub fn assets(
 
 	// Load characters
 	cmds.insert_resource(
-		Sprites {
+		LoadSprite {
 			ferris: material.add(
 				server.load(FERRIS).into()
 			),
@@ -46,7 +46,7 @@ pub fn assets(
 	// TODO: Turn laser(s) from images to rectangles
 	// Load lasers
 	cmds.insert_resource(
-		Lasers {
+		LoadLaser {
 			red: material.add(
 				server.load(RED_LASER).into()
 			)
@@ -55,7 +55,7 @@ pub fn assets(
 
 	// Get window size
 	cmds.insert_resource(
-		WindowSize {
+		GetWinSize {
 			h: win.height(),
 			w: win.width()
 		}

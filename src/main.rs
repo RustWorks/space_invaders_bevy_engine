@@ -26,7 +26,7 @@ fn main() {
 	let open =
 		File::open(&path).expect("Failed opening file");
 
-	let config: Settings =
+	let set: LoadSettings =
 		match from_reader(open) {
 			Ok(o) => o,
 			Err(e) => {
@@ -41,11 +41,11 @@ fn main() {
 			WindowDescriptor
 				{
 					title: "Space Invaders!".into(),
-					width: config.window.width,
-					height: config.window.height,
-					vsync: config.window.vsync,
-					resizable: config.window.resizable,
-					cursor_visible: config.window.cursor_visible,
+					width: set.window.width,
+					height: set.window.height,
+					vsync: set.window.vsync,
+					resizable: set.window.resizable,
+					cursor_visible: set.window.cursor_visible,
 
 					..Default::default()
 				}

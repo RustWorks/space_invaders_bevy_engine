@@ -11,17 +11,17 @@ pub struct Player;
 pub struct PlayerReady(pub bool);
 
 pub fn player_spawn(
-	mut cmds: Commands,
-	sprites: Res<Sprites>,
-	window: Res<WindowSize>
+	sprite: Res<LoadSprite>,
+	win_size: Res<GetWinSize>,
+	mut cmds: Commands
 ) {
-	let pos_btm = -window.h / 2.0;
+	let pos_btm = -win_size.h / 2.0;
 
 	// Spawn player's sprite
 	cmds.spawn_bundle
 		(
 			SpriteBundle {
-				material: sprites.ferris.clone(),
+				material: sprite.ferris.clone(),
 				transform: Transform {
 					translation: Vec3::new(0.0, pos_btm + 70.0 / 2.0 + 5.0, 10.0),
 					scale: Vec3::new(SCALE, SCALE, 1.1),
@@ -76,7 +76,7 @@ pub fn player_movement(
 // Spawn laser sprite on
 pub fn player_shooting(
 	input: Res<Input<KeyCode>>,
-	red_laser: Res<Lasers>,
+	red_laser: Res<LoadLaser>,
 	mut cmds: Commands,
 	mut query: Query<
 		(
@@ -120,7 +120,7 @@ pub fn player_shooting(
 }
 
 pub fn player_laser_movement(
-	window: Res<WindowSize>,
+	win_size: Res<GetWinSize>,
 	mut cmds: Commands,
 	mut query: Query<
 		(
@@ -140,7 +140,7 @@ pub fn player_laser_movement(
 			&mut red_laser_trans.translation;
 
 			trans.y += red_laser_speed.0 * TIME_STEP;
-			if trans.y > window.h {
+			if trans.y > win_size.h {
 				cmds
 					.entity(red_laser_entity)
 					.despawn();

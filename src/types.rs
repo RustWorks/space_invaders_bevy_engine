@@ -17,26 +17,26 @@ pub struct Laser;
 pub struct Speed(pub f32);
 
 // Sprite loader
-pub struct Sprites {
+pub struct LoadSprite {
 	pub ferris: Handle<ColorMaterial>,
 	pub gopher: Handle<ColorMaterial>,
 }
 
 // Laser loader
-pub struct Lasers {
+pub struct LoadLaser {
 	pub red: Handle<ColorMaterial>,
 }
 
-// Window
-pub struct WindowSize {
+// Window info
+pub struct GetWinSize {
 	pub h: f32,
 	pub w: f32
 }
 
-// Settings handler
+// Deserialize settings.ron
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-pub struct Settings {
+pub struct LoadSettings {
 	pub window: WinOpts
 }
 

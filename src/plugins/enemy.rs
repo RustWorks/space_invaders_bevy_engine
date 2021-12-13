@@ -12,20 +12,20 @@ pub struct ActiveEnemies(pub u32);
 
 // Spawn enemy's sprite
 pub fn enemy_spawn(
-	sprites: Res<Sprites>,
-	window: Res<WindowSize>,
+	sprite: Res<LoadSprite>,
+	win_size: Res<GetWinSize>,
 	mut cmds: Commands,
-	mut active: ResMut<ActiveEnemies>,
+	mut active_enemy: ResMut<ActiveEnemies>,
 ) {
-	if active.0 < 1 {
+	if active_enemy.0 < 1 {
 		let mut rng =
 			thread_rng();
 
 		let w_span =
-			window.w / 2.0 - 100.0;
+			win_size.w / 2.0 - 100.0;
 
 		let h_span =
-			window.h / 2.0 - 100.0;
+			win_size.h / 2.0 - 100.0;
 
 		let x =
 			rng.gen_range(-w_span..w_span) as f32;
@@ -35,7 +35,7 @@ pub fn enemy_spawn(
 
 		cmds.spawn_bundle(
 			SpriteBundle {
-				material: sprites.gopher.clone(),
+				material: sprite.gopher.clone(),
 				transform: Transform {
 					translation: Vec3::new(x, y, 10.0),
 					scale: Vec3::new(SCALE, SCALE, 1.0),
@@ -46,7 +46,7 @@ pub fn enemy_spawn(
 			}
 		).insert(Enemy);
 
-		active.0 += 1;
+		active_enemy.0 += 1;
 	}
 }
 
@@ -68,7 +68,7 @@ pub fn enemy_despawn(
 		),
 		With<Enemy>,
 	>,
-	mut active: ResMut<ActiveEnemies>
+	mut active_enemy: ResMut<ActiveEnemies>
 ) {
 	for (
 		blue_laser_entity,
@@ -99,7 +99,7 @@ pub fn enemy_despawn(
 					.entity(enemy_entity)
 					.despawn();
 
-				active.0 -= 1;
+				active_enemy.0 -= 1;
 
 				cmds
 					.entity(blue_laser_entity)
