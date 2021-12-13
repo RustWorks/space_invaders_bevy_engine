@@ -141,9 +141,7 @@ pub fn player_laser_movement(
 
 			trans.y += red_laser_speed.0 * TIME_STEP;
 			if trans.y > win_size.h {
-				cmds
-					.entity(red_laser_entity)
-					.despawn();
+				cmds.entity(red_laser_entity).despawn();
 			}
 	}
 }

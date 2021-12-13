@@ -22,23 +22,17 @@ pub fn assets(
 	mut material: ResMut<Assets<ColorMaterial>>,
 ) {
 	let win =
-		windows
-			.get_primary_mut()
-			.unwrap();
+		windows.get_primary_mut().unwrap();
 
-	// Load characters
+	// Load Actors
 	cmds.insert_resource(
 		LoadActor {
 			ferris: material.add(
-				server
-					.load("actors\\ferris.png")
-					.into()
+				server.load("actors\\ferris.png").into()
 			),
 			// TODO: Finish gopher sprite
 			gopher: material.add(
-				server
-					.load("actors\\ferris.png")
-					.into()
+				server.load("actors\\ferris.png").into()
 			)
 		}
 	);
@@ -48,9 +42,7 @@ pub fn assets(
 	cmds.insert_resource(
 		LoadLaser {
 			red: material.add(
-				server
-					.load("lasers\\red.png")
-					.into()
+				server.load("lasers\\red.png").into()
 			)
 		}
 	);
@@ -88,9 +80,7 @@ pub fn fullscreen(
 	mut windows: ResMut<Windows>
 ) {
 	let win =
-		windows
-			.get_primary_mut()
-			.unwrap();
+		windows.get_primary_mut().unwrap();
 
 	if input.just_pressed(KeyCode::F) {
 		win.set_mode(

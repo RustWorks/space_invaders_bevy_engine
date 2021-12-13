@@ -95,15 +95,11 @@ pub fn enemy_despawn(
 				);
 
 			if let Some(_) = on_collision {
-				cmds
-					.entity(enemy_entity)
-					.despawn();
+				cmds.entity(enemy_entity).despawn();
 
 				active_enemy.0 -= 1;
 
-				cmds
-					.entity(blue_laser_entity)
-					.despawn();
+				cmds.entity(blue_laser_entity).despawn();
 			}
 		}
 	}
