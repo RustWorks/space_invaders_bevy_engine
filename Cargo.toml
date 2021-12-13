@@ -9,4 +9,4 @@ rand = "0.8.4"
 ron = "0.7.0"
 serde = "1.0.131"
 tracing = "0.1.29"
-discord-rich-presence = "0.1.8"
+discord-rich-presence = { git = "https://github.com/arcaaaa/discord-rich-presence.git" }
