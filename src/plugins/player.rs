@@ -73,7 +73,7 @@ pub fn player_movement(
 		}
 }
 
-// Spawn laser sprite on
+// Spawn laser sprite
 pub fn player_shooting(
 	input: Res<Input<KeyCode>>,
 	laser: Res<LoadLaser>,
