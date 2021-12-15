@@ -30,9 +30,8 @@ pub fn assets(
 			ferris: material.add(
 				server.load("actors\\ferris.png").into()
 			),
-			// TODO: Finish gopher sprite
 			gopher: material.add(
-				server.load("actors\\ferris.png").into()
+				server.load("actors\\gopher.png").into()
 			)
 		}
 	);

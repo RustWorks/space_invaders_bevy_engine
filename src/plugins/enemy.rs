@@ -1,3 +1,5 @@
+// TODO: Implement shooting system and movement for enemys
+
 use bevy::{
 	prelude::*,
 	sprite::collide_aabb::collide
