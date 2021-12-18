@@ -15,15 +15,14 @@ use crate::{
 fn main() {
 	App::build()
 		.insert_resource(
-			WindowDescriptor
-				{
-					title: "Space Invaders!".into(),
-					width: 1000.0,
-					height: 600.0,
-					vsync: true,
-					resizable: false,
+			WindowDescriptor {
+				title: "Space Invaders!".into(),
+				width: 1000.0,
+				height: 600.0,
+				vsync: true,
+				resizable: false,
 
-					..Default::default()
+				..Default::default()
 			}
 		)
 		.insert_resource(ClearColor(Color::BLACK))

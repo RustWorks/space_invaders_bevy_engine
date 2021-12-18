@@ -7,3 +7,7 @@ debug = true
 opt-level = 3
 lto = true
 debug = false
+
+[target.x86_64-pc-windows-msvc]
+linker = "rust-lld.exe"
+rustflags = ["-Zshare-generics=n"]
